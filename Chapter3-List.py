@@ -13,7 +13,7 @@ def averageEvens(list2):
         if list2[i] % 2 == 0:
             evenNumbers.append(list2[i])
     average = sum(evenNumbers) / len(evenNumbers)
-    return(average)
+    return average
 
 
 mainList = [2,5,3,1,4,7,6]
