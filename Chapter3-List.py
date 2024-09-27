@@ -9,7 +9,7 @@ def selectionSort(list):
 
 def averageEvens(list2):
     evenNumbers = []
-    for i in range(len(list2)):
+    for i in range(len(list2) - 1):
         if list2[i] % 2 == 0:
             evenNumbers.append(list2[i])
     average = sum(evenNumbers) / len(evenNumbers)
