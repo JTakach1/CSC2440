@@ -5,6 +5,7 @@ class Node:
 class SortLinkedList:
     def __init__(self):
         self.head = None
+
     def addNode(self, data):
         if (self.head == None):
             self.head = Node(data)
@@ -14,37 +15,53 @@ class SortLinkedList:
             curr = curr.next
         newNode = Node(data)
         curr.next = newNode
-    def partitionLast(self,start,end):
-        if (start == end or start == None or end == None):
-            return start
-        pivotPrev = start
-        curr = start
-        pivot = end.data
-        while (start != end):
-            if (start.data < pivot):
-                pivotPrev = curr
-                temp = curr.data
-                curr.data = start.data
-                start.data = temp
-                curr = curr.next
-            start = start.next
-        temp = curr.data
-        curr.data = pivot
-        end.data = temp
-        return pivotPrev
-    def sort(self,start,end):
-        if (start == end or start == None or end == None):
-            return start
-        pivotPrev = self.partitionLast(start,end)
-        self.sort(start, pivotPrev)
-        if (pivotPrev != None and pivotPrev == start):
-            self.sort(pivotPrev.next, end)
-        elif(pivotPrev != None and pivotPrev.next != None):
-            self.sort(pivotPrev.next.next,end)
+
+    def merge(self, front, back):
+        if not front:
+            return back
+        if not back:
+            return front
+
+        if front.data <= back.data:
+            merged = front
+            merged.next = self.merge(front.next, back)
+        else:
+            merged = back
+            merged.next = self.merge(front, back.next)
+
+        return merged
+
+    def split(self, head):
+        slow = head
+        fast = head.next
+
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        mid = slow.next
+        slow.next = None  # Split the list into two halves
+        return head, mid
+
+    def mergeSort(self, head):
+        if not head or not head.next:
+            return head
+
+        left, right = self.split(head)  # Split the list into halves
+
+        leftSort = self.mergeSort(left)  # Sort the left half
+        rightSort = self.mergeSort(right)  # Sort the right half
+
+        return self.merge(leftSort, rightSort)  # Merge the sorted halves
+
+    def sort(self):
+        self.head = self.mergeSort(self.head)
+
     def printList(self,n):
         while (n != None):
             print(n.data, end = " ")
             n = n.next
+
     def AverageOfEven(self, head):
         evenSum = 0
         evenCount = 0
@@ -58,11 +75,6 @@ class SortLinkedList:
             return 0
         return evenSum / evenCount
 
-
-
-
-
-
 if __name__ == "__main__":
     list = SortLinkedList()
     list.addNode(4)
@@ -72,13 +84,10 @@ if __name__ == "__main__":
     list.addNode(6)
     list.addNode(3)
     list.addNode(5)
-
     list.printList(list.head)
 
-    back = list.head
-    while (back.next != None):
-        back = back.next
-    list.sort(list.head, back)
+
+    list.sort()
     print("\n \nSorted List")
     list.printList(list.head)
 
