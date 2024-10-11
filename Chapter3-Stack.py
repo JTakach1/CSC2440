@@ -20,5 +20,5 @@ def reverse_array(arr):
 if __name__ == "__main__":
     arr = input_data()
     print(arr)
-    inputList = reverse_array(arr)
-    print(inputList)
+    arr = reverse_array(arr)
+    print(arr)
