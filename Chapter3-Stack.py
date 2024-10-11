@@ -1,16 +1,16 @@
 def input_data():
-    List = []
+    arr = []
     print("Enter elements for list, enter 'done' when finished:")
     while True:
         num = input("Enter element one at a time: ")
         if num.lower() == 'done':
             break
-        List.append(num)
-    return List
+        arr.append(num)
+    return arr
 
-def reverse_array(List):
+def reverse_array(arr):
     temp = []
-    for item in List:
+    for item in arr:
         temp.append(item)
     reversed = []
     while temp:
@@ -18,7 +18,7 @@ def reverse_array(List):
     return reversed
 
 if __name__ == "__main__":
-    inputList = input_data()
-    print(inputList)
-    inputList = reverse_array(inputList)
+    arr = input_data()
+    print(arr)
+    inputList = reverse_array(arr)
     print(inputList)
