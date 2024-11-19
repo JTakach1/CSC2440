@@ -1,45 +1,60 @@
+from collections import deque
 class Node:
-    def __init__(self, key):
+    def __init__(self, data):
+        self.data = data
         self.left = None
         self.right = None
-        self.val = key
 
-def insert(root, value):
+def insert(root, val):
     if root is None:
-        return Node(value)
-    else:
-        if value < root.val:
-            root.left = insert(root.left, value)
+        return Node(val)
+    queue = deque([root])
+    while queue:
+        temp = queue.popleft()
+        if temp.left is None:
+            temp.left = Node(val)
+            break
         else:
-            root.right = insert(root.right, value)
+            queue.append(temp.left)
+        if temp.right is None:
+            temp.right = Node(val)
+            break
+        else:
+            queue.append(temp.right)
     return root
 
-def sumDiv(root):
+def sum_div(root):
     if root is None:
         return 0
-    sum_left = sumDiv(root.left)
-    sum_right = sumDiv(root.right)
-    if root.val % 5 == 0:
-        currentVal = root.val
+
+    sum_left = sum_div(root.left)
+    sum_right = sum_div(root.right)
+    if root.data % 5 == 0:
+        current_val = root.data
     else:
-        currentVal = 0
-    return sum_left + sum_right + currentVal
+        current_val = 0
 
-def print_inorder(root):
-    if root:
-        print_inorder(root.left)
-        print(root.val, end=" ")
-        print_inorder(root.right)
+    return sum_left + sum_right + current_val
 
-root = None
-while True:
-    value = input("Enter tree values (type 'done' when finished):")
-    if value.lower() == 'done':
-        break
+def inorder(root):
+    if root is None:
+        return
+    inorder(root.left)
+    print(root.data, end=' ')
+    inorder(root.right)
+
+def inputTreeValues():
+    root = None
+    while True:
+        value = input("Enter tree values (type 'done' when finished): ")
+        if value.lower() == 'done':
+            break
         value = int(value)
         root = insert(root, value)
+    return root
 
-sum_div_5 = sumDiv(root)
-print("Sum of nodes divisible by 5: " + str(sum_div_5))
-("In-order traversal of the tree:")
-print_inorder(root)
+root = inputTreeValues()
+sum_div_5 = sum_div(root)
+print("Sum of nodes divisible by 5:", sum_div_5)
+print("In-order traversal of the tree:")
+inorder(root)
