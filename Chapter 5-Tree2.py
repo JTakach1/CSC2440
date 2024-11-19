@@ -4,49 +4,42 @@ class Node:
         self.right = None
         self.val = key
 
-def insert(root, key):
+def insert(root, value):
     if root is None:
-        return Node(key)
-    if key < root.val:
-        root.left = insert(root.left, key)
+        return Node(value)
     else:
-        root.right = insert(root.right, key)
-    return root
-
-def input_tree_values():
-    root = None
-    print("Enter the values to insert into the BST, separated by spaces:")
-    values_input = input("Enter values: ")
-    values = values_input.split()
-
-    for value in values:
-        if value.isdigit() or (value[0] == '-' and value[1:].isdigit()):  # Check for negative numbers as well
-            root = insert(root, int(value))
+        if value < root.val:
+            root.left = insert(root.left, value)
         else:
-            print("Non digit in input, removing it.")
+            root.right = insert(root.right, value)
     return root
 
-def sum_of_divisible_by_5(root):
+def sumDiv(root):
     if root is None:
         return 0
-    sum_div_5 = 0
+    sum_left = sumDiv(root.left)
+    sum_right = sumDiv(root.right)
     if root.val % 5 == 0:
-        sum_div_5 += root.val
-    sum_div_5 += sum_of_divisible_by_5(root.left)
-    sum_div_5 += sum_of_divisible_by_5(root.right)
+        currentVal = root.val
+    else:
+        currentVal = 0
+    return sum_left + sum_right + currentVal
 
-    return sum_div_5
-
-def inorder_traversal(root):
+def print_inorder(root):
     if root:
-        inorder_traversal(root.left)
+        print_inorder(root.left)
         print(root.val, end=" ")
-        inorder_traversal(root.right)
+        print_inorder(root.right)
 
-if __name__ == "__main__":
-    root = input_tree_values()
-    sum_div_5 = sum_of_divisible_by_5(root)
-    print(f"Sum of values divisible by 5: ", sum_div_5)
-    print("In-order traversal of the tree:")
-    inorder_traversal(root)
-    print()
+root = None
+while True:
+    value = input("Enter tree values (type 'done' when finished):")
+    if value.lower() == 'done':
+        break
+        value = int(value)
+        root = insert(root, value)
+
+sum_div_5 = sumDiv(root)
+print("Sum of nodes divisible by 5: " + str(sum_div_5))
+("In-order traversal of the tree:")
+print_inorder(root)
