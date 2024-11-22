@@ -1,0 +1,56 @@
+class Node:
+    def __init__(self, val):
+        self.value = val
+        self.left = None
+        self.right = None
+
+def insert(root, value):
+    if root is None:
+        return Node(value)
+    if value < root.value:
+        root.left = insert(root.left, value)
+    else:
+        root.right = insert(root.right, value)
+    return root
+
+def inorder(root):
+    inOrderList = []
+    inorderRecursive(root, inOrderList)
+    return inOrderList
+
+def inorderRecursive(root, sortedInorder):
+    if root is not None:
+        inorderRecursive(root.left, sortedInorder)
+        sortedInorder.append(root.value)
+        inorderRecursive(root.right, sortedInorder)
+
+def kthLargest(root, k):
+    elements = inorder(root)
+    kthLargest = elements[len(elements) - k]
+    tsum = 0
+    tsum = sumKth(root, kthLargest, tsum)
+    return tsum
+
+def sumKth(node, kth_largest, total_sum):
+    if node is None:
+        return total_sum
+    if node.value >= kth_largest:
+        total_sum += node.value
+    total_sum = sumKth(node.right, kth_largest, total_sum)
+    total_sum = sumKth(node.left, kth_largest, total_sum)
+    return total_sum
+
+#########################################
+root = None
+while True:
+    value = input("Enter values. Type 'done' when finished: ")
+    if value.lower() == 'done':
+        break
+    root = insert(root, int(value))
+
+values = inorder(root)
+print("Binary Tree Values:", values)
+
+k = int(input("Enter k: "))
+result = kthLargest(root, k)
+print("Sum of tree elements:", result)
