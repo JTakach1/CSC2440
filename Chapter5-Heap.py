@@ -19,7 +19,7 @@ def heap_sort(arr):
     return sorted_arr
 
 def print_sorted_values(arr):
-    print("Sorted values (in decreasing order):")
+    print("Sorted values:")
     print(arr)
 
 
