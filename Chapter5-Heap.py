@@ -1,28 +1,35 @@
 import heapq
-def input_tree_values():
-    arr = []
+
+def treeValuesInputs():
+    inputValuesStorage = []
     while True:
-        value = input("Enter tree values one at a time. Type 'done' when you're finished: ")
-        if value.lower() == 'done':
+        valForTree = input("Enter heap values one at a time. Type 'done' to stop inputting: ")
+        if valForTree.lower() == 'done':
             break
-        arr.append(int(value))
-        return arr
+        else:
+            inputValuesStorage.append(valForTree)
 
+    return inputValuesStorage
 
-def heap_sort(arr):
+def minHeapSort(arr):
     heapq.heapify(arr)
-    sorted_arr = []
+    valueStorage = []
     while arr:
-        smallest = heapq.heappop(arr)
-        sorted_arr.insert(0, smallest)
+        valueStorage.append(heapq.heappop(arr))
 
-    return sorted_arr
+    left = 0
+    right = len(valueStorage) - 1
 
-def print_sorted_values(arr):
-    print("Sorted values:")
-    print(arr)
+    while left < right:
+        valueStorage[left], valueStorage[right] = valueStorage[right], valueStorage[left]
+        left += 1
+        right -= 1
 
+    return valueStorage
 
-arr = input_tree_values()
-sorted_arr = heap_sort(arr)
-print_sorted_values(sorted_arr)
+if __name__ == "__main__":
+    arr = treeValuesInputs()
+
+    sortedArray = minHeapSort(arr)
+    print("Sorted values in decreasing order:")
+    print(sortedArray)
